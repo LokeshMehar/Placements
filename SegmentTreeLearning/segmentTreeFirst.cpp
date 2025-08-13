@@ -41,6 +41,25 @@ void buildMaxTree(int idx, int low, int high, const vector<int>& arr, vector<int
     seg[idx] = max(seg[2 * idx + 1],seg[2 * idx + 2]);
 }
 
+void buildMaxIndexTree(int idx, int low, int high, const vector<int>& arr, vector<int>& seg)
+{
+	if(low == high)
+	{
+		seg[idx] = low;
+		return;
+	}
+	int mid = low + ((high - low) >> 1);
+	buildMaxIndexTree(2*idx + 1,low,mid,arr,seg);
+	buildMaxIndexTree(2*idx + 2,mid+1,high,arr,seg);
+	if(arr[seg[2*idx + 1]] >= arr[seg[2*idx + 2]])
+		seg[idx] = seg[2*idx + 1];
+	else
+		seg[idx] = seg[2*idx + 2];
+}
+
+
+
+
 
 
 
@@ -261,6 +280,52 @@ void buildMaxIndexTree(int idx, int low, int high,vector<int>& arr, vector<int>&
 		seg[idx] = seg[2 * idx + 1];
 	} else {
 		seg[idx] = seg[2 * idx + 2];
+	}
+}
+
+int rangeMaxIndexThanMin(int idx,int low,int high,int  start,int end,int target,vector<int>& seg,vector<int>& arr)
+{
+	if( low > end   || high <start || arr[seg[idx]] < target)
+	{
+		return -1;
+	}
+	if(low >= start && high <=end && arr[seg[idx]] >= target)
+	{
+		if(low == high) return seg[idx]; // If we are at a leaf node, return the index
+		int mid = low + ((high - low)>>1);
+		int leftIndex = rangeMaxIndexThanMin(2*idx + 1,low,mid,start,end,target,seg,arr);
+		if(leftIndex != -1) return leftIndex; // If found in left subtree, return it
+		return seg[idx]; // Otherwise, return the current index
+	}
+	return -1; // mujhe nhi lagta control kabhi yha aayega!!
+}
+
+
+void updateMaxIndexThanMin(int idx,int low,int high,int targetIdx,vector<int>& arr, vector<int>& seg)
+{
+	if(low == high)
+	{
+		seg[idx] = -1; // Update the index of the maximum element
+		return;
+	}
+	int mid = low + ((high - low) >> 1);
+	if(mid >= targetIdx)
+		updateMaxIndexThanMin(2*idx + 1,low,mid,targetIdx,arr,seg);
+	else
+		updateMaxIndexThanMin(2*idx + 2,mid+1,high,targetIdx,arr,seg);
+
+	if( seg[2*idx + 1] == -1  && seg[2*idx + 2] == -1)
+		seg[idx] = -1;
+	else if(seg[2*idx + 1] == -1)
+		seg[idx] = seg[2*idx + 2];
+	else if(seg[2*idx + 2] == -1)
+		seg[idx] = seg[2*idx + 1];
+	else
+	{
+		if(arr[seg[2*idx + 1]] >= arr[seg[2*idx + 2]])
+			seg[idx] = seg[2*idx + 1];
+		else
+			seg[idx] = seg[2*idx + 2];
 	}
 }
 
