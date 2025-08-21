@@ -97,12 +97,91 @@ Node* deleteTail(Node* head)
 	return real;
 }
 
+Node* deletePosition(Node* head,int position)
+{
+    if(!head )return nullptr;
+    if(position == 1)return head->next;
+    int idx  = 2;
+    Node* prev = head;
+    Node* curr = head->next;
+    while(curr && idx<=position)
+    {
+        if(idx == position)
+        {
+            prev->next = curr->next;
+            // delete curr;
+            break;
+        }
+        idx++;
+        prev = curr;
+        curr=curr->next;
+    }
+    return head;
+}
+
+
+Node* deleteValue(Node* head,int val)
+{
+    if(!head )return nullptr;
+    while(head && head->val == val)
+        head =  head->next;
+    
+
+    if(!head )return nullptr;
+    Node* prev = head;
+    Node* curr = head->next;
+    while(curr)
+    {
+        while(curr && curr->val == val)
+        {
+            curr = curr->next;
+        }
+        prev->next = curr;
+        if(curr)
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+        else
+            break;
+    }
+    return head;
+}
+
+
+Node* insertHead(Node* head,int value)
+{
+    Node* newHead = new Node(value);
+    newHead->next = head;
+    return newHead;
+}
+
+Node* insertTail(Node* head,int value)
+{
+    if(!head)
+    {
+        Node* newHead = new Node(value);
+        return newHead;
+    }
+    Node* curr = head;
+    while(curr->next)curr= curr->next;
+    Node* newTail = new Node(value);
+    curr->next = newTail;
+    return head;
+}
+
+Node* insertAtK(Node* head,int k)
+{
+    
+}
+
 
 int main()
 {
-    vector<int> arr = {1,2,3,4,5};
+    vector<int> arr = {5,5,3,2,5};
     Node* head = makeLinkedList(arr);
-	head = deleteTail(head);
+	head = insertTail(head,2);
+
 	printLinkedList(head);
 	cout << endl;
     return 0;
