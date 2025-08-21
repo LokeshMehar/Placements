@@ -36,22 +36,74 @@ public:
 };
 
 
-int main()
+Node* makeLinkedList(vector<int> arr)
 {
-    int arr[5] = {1,2,3,4,5};
     Node* head = new Node(arr[0]);
     Node* moving = head;
-    for(int i=1;i<5;i++)
+    for(int i=1;i<arr.size();i++)
     {
         Node* temp = new Node(arr[i]);
-        moving->setNext(temp);
+        moving->next = temp;
         moving = temp;
     }
+    return head;
+}
 
+void printLinkedList(Node* head)
+{
     while(head)
     {
-        cout << head->getVal() << " ";
-        head = head->getNext();
+        cout << head-> val << " ";
+        head = head->next;
     }
+}
+
+bool searchNode(Node* head,int target)
+{
+    while(head)
+    {
+        if(head->val == target)return true;
+        head = head->next;
+    }
+    return false;
+}
+
+int lengthLinkedList(Node* head)
+{
+	int ret = 0;
+	while(head)
+	{
+		ret++;head = head->next;
+	}
+	return ret;
+}
+
+Node* deleteHead(Node* head)
+{
+	if(!head || !head->next)return nullptr;
+	return head->next;
+}
+
+
+Node* deleteTail(Node* head)
+{
+	if(!head || !head->next)return nullptr;
+	Node* real = head;
+	while(head->next->next)
+	{
+		head = head->next;
+	}
+	head->next = nullptr;
+	return real;
+}
+
+
+int main()
+{
+    vector<int> arr = {1,2,3,4,5};
+    Node* head = makeLinkedList(arr);
+	head = deleteTail(head);
+	printLinkedList(head);
+	cout << endl;
     return 0;
 }
