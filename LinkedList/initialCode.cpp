@@ -170,17 +170,49 @@ Node* insertTail(Node* head,int value)
     return head;
 }
 
-Node* insertAtK(Node* head,int k)
+Node* insertAtK(Node* head,int k,int value)
 {
-    
+    if(k==1 || (!head && k==1))
+    {
+        Node* newHead = new Node(value);
+        newHead->next = head;
+        return newHead;
+    }
+    Node* prev = head;
+    Node* curr = head->next;
+    int idx =2;
+    while(curr && idx <= k)
+    {
+        if(idx == k)
+        {
+            Node* newNode = new Node(value);
+            prev->next = newNode;
+            newNode->next = curr;
+            break;
+        }
+        prev = curr;
+        idx++;
+        curr = curr->next;
+    }
+    if(idx == k)
+    {
+        Node* newNode = new Node(value);
+        prev->next = newNode;
+        newNode->next = curr;
+    }
+
+    return head;
+
 }
+
+
 
 
 int main()
 {
     vector<int> arr = {5,5,3,2,5};
     Node* head = makeLinkedList(arr);
-	head = insertTail(head,2);
+	head = insertAtK(head,7,0);
 
 	printLinkedList(head);
 	cout << endl;
