@@ -14,8 +14,10 @@ Node mergeNode(Node a, Node b) {
     return {a.sum + b.sum, min(a.mn, b.mn), max(a.mx, b.mx)};
 }
 
-void buildSeg(int idx, int low, int high) {
-    if (low == high) {
+void buildSeg(int idx, int low, int high) 
+{
+    if (low == high) 
+    {
         seg[idx] = {arr[low], arr[low], arr[low]};
         return;
     }
@@ -25,15 +27,18 @@ void buildSeg(int idx, int low, int high) {
     seg[idx] = mergeNode(seg[idx*2+1], seg[idx*2+2]);
 }
 
-void applyLazy(int idx, int low, int high, long long val) {
+void applyLazy(int idx, int low, int high, long long val) 
+{
     seg[idx].sum += (high - low + 1) * val;
     seg[idx].mn += val;
     seg[idx].mx += val;
     lazy[idx] += val;
 }
 
-void updateRange(int idx, int low, int high, int start, int end, long long val) {
-    if (lazy[idx] != 0) { // Apply pending lazy updates
+void updateRange(int idx, int low, int high, int start, int end, long long val) 
+{
+    if (lazy[idx] != 0) 
+    { // Apply pending lazy updates
         applyLazy(idx, low, high, lazy[idx]);
         if (low != high) {
             lazy[idx*2+1] += lazy[idx];
@@ -56,10 +61,12 @@ void updateRange(int idx, int low, int high, int start, int end, long long val) 
     seg[idx] = mergeNode(seg[idx*2+1], seg[idx*2+2]);
 }
 
-Node queryRange(int idx, int low, int high, int start, int end) {
+Node queryRange(int idx, int low, int high, int start, int end) 
+{
     if (lazy[idx] != 0) { // Apply pending lazy updates
         applyLazy(idx, low, high, lazy[idx]);
-        if (low != high) {
+        if (low != high) 
+        {
             lazy[idx*2+1] += lazy[idx];
             lazy[idx*2+2] += lazy[idx];
         }

@@ -1,0 +1,374 @@
+# Decentralized Edge Monitoring Framework
+## Presentation Content
+
+### Slide 1: Introduction
+**Title:** Edge Computing Monitoring Challenge
+**Visual Elements:**
+- Simple diagram: Traditional data center vs Edge nodes scattered geographically
+- Icons: Cloud, edge devices, network connections
+**Minimal Text:** 
+- "Edge computing creates new monitoring challenges"
+- "Traditional centralized systems fail in volatile environments"
+- "Need for decentralized approach"
+
+---
+
+### Slide 2: Abstract - The Solution Overview
+**Visual Elements:**
+- Three connected circles: "Gossip Protocol" → "Priority Filtering" → "Consensus"
+- Simple network topology showing nodes communicating
+**Minimal Text:** "Decentralized • Resource-Aware • Fault-Tolerant"
+
+---
+
+### Slide 3: Motivation - Why This Matters
+**Visual Elements:**
+- Problem icons: 
+  - ❌ Single point of failure (broken server)
+  - ❌ High latency (clock with delay)
+  - ❌ Network congestion (traffic jam icon)
+- Solution arrow pointing to distributed network
+**Minimal Text:** "Edge needs resilient monitoring"
+
+---
+
+### Slide 4: Research Gap - What's Missing
+**Visual Elements:**
+- Gap visualization: Bridge with missing piece
+- Two sides: "Existing Gossip Protocols" | "Resource Constraints"
+- Question mark in the middle
+**Minimal Text:** "How to make gossip resource-aware?"
+
+---
+
+### Slide 5: Exploration 1 - Gossip Protocol Basics
+**Visual Elements:**
+- Node communication flow: A→B→C→D (rumor spreading)
+- Simple animation concept: Information propagation waves
+**Minimal Text:** "Peer-to-peer state sharing"
+
+---
+
+### Slide 6: Exploration 2 - Priority-Based Filtering
+**Visual Elements:**
+- Traffic light system: 
+  - 🔴 HIGH (CPU, critical metrics)
+  - 🟡 MEDIUM (Memory usage)
+  - 🟢 LOW (Storage capacity)
+- Bandwidth meter showing reduction
+**Minimal Text:** "Smart metric prioritization"
+
+---
+
+### Slide 7: Exploration 3 - Data Model Design
+**Visual Elements:**
+- Simple box diagram showing:
+  - Version counter (🔢)
+  - Heartbeat timestamp (💓)
+  - Digest hash (🔐)
+  - App state (📊)
+**Minimal Text:** "Integrity • Freshness • Liveness"
+
+---
+---
+
+## Detailed Text Content for Each Slide
+
+### Slide 1: Introduction - What You'll Present
+**Main Content:**
+- Edge computing has fundamentally changed how we deploy and manage infrastructure
+- Unlike traditional data centers with stable, high-bandwidth connections, edge environments are characterized by:
+  - Geographic distribution across unstable networks
+  - Resource constraints (limited CPU, memory, bandwidth)
+  - High node volatility and frequent failures
+- Traditional centralized monitoring systems like Prometheus or Zabbix create single points of failure
+- When the central server goes down, entire monitoring visibility is lost
+- High network latency to reach geographically distant edge nodes
+- Centralized approaches consume excessive bandwidth by funneling all data to one point
+- This creates a critical need for a fundamentally different approach: decentralized monitoring
+
+### Slide 2: Abstract - What You'll Present
+**Main Content:**
+- Our solution integrates three cutting-edge technologies into one cohesive framework
+- **Gossip Protocol**: Enables peer-to-peer communication where each node shares information with random neighbors, ensuring eventual consistency across the network
+- **Priority Filtering**: Implements intelligent data reduction by classifying metrics based on importance and volatility, dramatically reducing network overhead
+- **Consensus Mechanism**: Provides trustworthy data retrieval through leaderless quorum consensus
+- The system is designed to be resource-aware, fault-tolerant, and fully decentralized
+- No single point of failure, scales naturally with network size
+- Container-based implementation makes it portable and easy to deploy
+
+### Slide 3: Motivation - What You'll Present
+**Main Content:**
+- **Single Point of Failure Problem**: In centralized systems, if the monitoring server fails, you lose all visibility into your infrastructure - this is unacceptable in critical edge deployments
+- **High Latency Issues**: Edge nodes might be thousands of kilometers away from the central server, creating significant delays in both data collection and alerting
+- **Network Congestion**: All monitoring data converging to one central point creates bandwidth bottlenecks, especially problematic in edge environments with limited connectivity
+- **Scalability Limits**: Adding more nodes requires proportionally more resources at the central server
+- **Solution Vision**: A distributed system where each node maintains partial system state and collectively provides complete monitoring coverage
+- Resilient to individual node failures, self-healing network topology
+
+### Slide 4: Research Gap - What You'll Present
+**Main Content:**
+- **Existing Gossip Protocols**: Well-established for state dissemination in distributed systems, proven fault-tolerant and scalable
+- **However**: Traditional gossip approaches are "dumb" - they broadcast everything to everyone, wasting precious bandwidth
+- **Resource Constraints Reality**: Edge environments have limited network bandwidth, making naive gossiping inefficient
+- **Value of Information Theory**: Academic concept exists for prioritizing information based on utility, but lacks practical implementation
+- **The Missing Bridge**: No existing framework combines gossip protocols with intelligent, resource-aware filtering specifically for edge monitoring
+- **Our Innovation**: We bridge this gap by implementing Value of Information principles as a practical priority-based filtering mechanism integrated directly into the gossip protocol
+
+### Slide 5: Exploration 1 - Gossip Protocol Basics - What You'll Present
+**Main Content:**
+- **Rumor Spreading Analogy**: Like how rumors spread in social networks, each node shares information with a few random neighbors
+- **Push-Pull Mechanism**: Nodes both send their information (push) and request information from others (pull), ensuring bidirectional data flow
+- **Eventual Consistency**: Mathematical guarantee that all nodes will converge to the same state given enough time
+- **Fault Tolerance**: Network can lose multiple nodes without losing information - redundancy is built into the protocol
+- **Scalability**: Communication complexity grows logarithmically, not linearly, with network size
+- **Periodic Nature**: Gossip cycles occur at regular intervals, creating predictable communication patterns
+- **Randomization**: Random peer selection prevents network partitions and ensures even distribution
+
+### Slide 6: Exploration 2 - Priority-Based Filtering - What You'll Present
+**Main Content:**
+- **HIGH Priority Metrics**: CPU utilization, memory pressure, critical service health - highly volatile and operationally critical, always transmitted
+- **MEDIUM Priority Metrics**: Disk I/O, network utilization - moderately important, transmitted when significant changes occur
+- **LOW Priority Metrics**: Storage capacity, system uptime - stable metrics, transmitted periodically or on major changes
+- **Dynamic Classification**: Metrics can change priority based on system conditions (e.g., disk space becomes HIGH priority when approaching full)
+- **Bandwidth Savings**: Preliminary testing shows 60-80% reduction in network traffic compared to unfiltered gossip
+- **Contextual Intelligence**: System learns which metrics matter most for specific operational scenarios
+- **Threshold-Based Triggering**: Significant changes trigger immediate transmission regardless of priority
+
+### Slide 7: Exploration 3 - Data Model Design - What You'll Present
+**Main Content:**
+- **Version Counter**: Monotonically increasing number ensures data freshness - nodes can detect and reject stale information
+- **Heartbeat Timestamp**: Proves node liveness - other nodes can detect failed nodes when heartbeats stop arriving
+- **Digest Hash**: Cryptographic hash ensures data integrity during transmission - detects corruption or tampering
+- **Application State**: Contains the actual monitoring metrics in structured format
+- **Compact Design**: Entire data structure optimized for minimal network footprint while maintaining all necessary metadata
+- **Atomic Updates**: Version counter ensures that partial updates are impossible - data is either completely fresh or completely stale
+- **Self-Validating**: Each message can be independently verified for integrity and freshness without external dependencies
+
+### Introduction Notes:
+- Edge computing creates new monitoring challenges
+- Traditional centralized systems fail in volatile environments
+- Need for decentralized approach
+
+### Abstract Notes:
+- Combines three key technologies
+- Focus on practical implementation
+- Addresses real-world constraints
+
+### Motivation Notes:
+- Centralized systems create bottlenecks
+- Edge environments are inherently unstable
+- Resource constraints demand efficiency
+
+### Research Gap Notes:
+- Gossip protocols exist but lack resource awareness
+- VoI concepts are theoretical
+- Need practical integration
+
+### Exploration Notes:
+1. **Gossip Protocol**: Explain rumor-spreading analogy, eventual consistency
+2. **Priority Filtering**: Demonstrate bandwidth savings, metric classification
+3. **Data Model**: Emphasize integrity guarantees, version control
+
+---
+
+## Presentation Tips:
+- Keep slides visual-heavy, text-light
+- Use animations to show processes
+- Prepare detailed explanations verbally
+- Focus on concepts, not implementation details
+- Be ready to explain the "why" behind each design choice
+
+
+# Decentralized Edge Monitoring Framework
+## Presentation Content
+
+### Slide 1: Introduction
+**Title:** Edge Computing Monitoring Challenge
+**Visual Elements:**
+- Simple diagram: Traditional data center vs Edge nodes scattered geographically
+- Icons: Cloud, edge devices, network connections
+**Minimal Text:** 
+- "Edge computing creates new monitoring challenges"
+- "Traditional centralized systems fail in volatile environments"
+- "Need for decentralized approach"
+
+---
+
+### Slide 2: Abstract - The Solution Overview
+**Visual Elements:**
+- Three connected circles: "Gossip Protocol" → "Priority Filtering" → "Consensus"
+- Simple network topology showing nodes communicating
+**Minimal Text:** "Decentralized • Resource-Aware • Fault-Tolerant"
+
+---
+
+### Slide 3: Motivation - Why This Matters
+**Visual Elements:**
+- Problem icons: 
+  - ❌ Single point of failure (broken server)
+  - ❌ High latency (clock with delay)
+  - ❌ Network congestion (traffic jam icon)
+- Solution arrow pointing to distributed network
+**Minimal Text:** "Edge needs resilient monitoring"
+
+---
+
+### Slide 4: Research Gap - What's Missing
+**Visual Elements:**
+- Gap visualization: Bridge with missing piece
+- Two sides: "Existing Gossip Protocols" | "Resource Constraints"
+- Question mark in the middle
+**Minimal Text:** "How to make gossip resource-aware?"
+
+---
+
+### Slide 5: Exploration 1 - Gossip Protocol Basics
+**Visual Elements:**
+- Node communication flow: A→B→C→D (rumor spreading)
+- Simple animation concept: Information propagation waves
+**Minimal Text:** "Peer-to-peer state sharing"
+
+---
+
+### Slide 6: Exploration 2 - Priority-Based Filtering
+**Visual Elements:**
+- Traffic light system: 
+  - 🔴 HIGH (CPU, critical metrics)
+  - 🟡 MEDIUM (Memory usage)
+  - 🟢 LOW (Storage capacity)
+- Bandwidth meter showing reduction
+**Minimal Text:** "Smart metric prioritization"
+
+---
+
+### Slide 7: Exploration 3 - Data Model Design
+**Visual Elements:**
+- Simple box diagram showing:
+  - Data freshness (🔢)
+  - Node health (💓)
+  - Data reliability (🔐)
+  - System metrics (📊)
+**Minimal Text:** "Reliable data exchange"
+
+---
+
+### Slide 7: Exploration 3 - System Architecture
+**Visual Elements:**
+- Clean architectural diagram:
+  - Nodes with gossip connections
+  - Filtering layer
+  - Consensus mechanism
+- Flow arrows showing data movement
+**Minimal Text:** "Integrated monitoring ecosystem"
+
+---
+
+## Detailed Text Content for Each Slide
+
+### Slide 1: Introduction - What You'll Present
+**Main Content:**
+- Edge computing has fundamentally changed how we deploy and manage infrastructure
+- Unlike traditional data centers with stable, high-bandwidth connections, edge environments are characterized by:
+  - Geographic distribution across unstable networks
+  - Resource constraints (limited CPU, memory, bandwidth)
+  - High node volatility and frequent failures
+- Traditional centralized monitoring systems like Prometheus or Zabbix create single points of failure
+- When the central server goes down, entire monitoring visibility is lost
+- High network latency to reach geographically distant edge nodes
+- Centralized approaches consume excessive bandwidth by funneling all data to one point
+- This creates a critical need for a fundamentally different approach: decentralized monitoring
+
+### Slide 2: Abstract - What You'll Present
+**Main Content:**
+- Our solution integrates three cutting-edge technologies into one cohesive framework
+- **Gossip Protocol**: Enables peer-to-peer communication where each node shares information with random neighbors, ensuring eventual consistency across the network
+- **Priority Filtering**: Implements intelligent data reduction by classifying metrics based on importance and volatility, dramatically reducing network overhead
+- **Consensus Mechanism**: Provides trustworthy data retrieval through leaderless quorum consensus
+- The system is designed to be resource-aware, fault-tolerant, and fully decentralized
+- No single point of failure, scales naturally with network size
+- Container-based implementation makes it portable and easy to deploy
+
+### Slide 3: Motivation - What You'll Present
+**Main Content:**
+- **Single Point of Failure Problem**: In centralized systems, if the monitoring server fails, you lose all visibility into your infrastructure - this is unacceptable in critical edge deployments
+- **High Latency Issues**: Edge nodes might be thousands of kilometers away from the central server, creating significant delays in both data collection and alerting
+- **Network Congestion**: All monitoring data converging to one central point creates bandwidth bottlenecks, especially problematic in edge environments with limited connectivity
+- **Scalability Limits**: Adding more nodes requires proportionally more resources at the central server
+- **Solution Vision**: A distributed system where each node maintains partial system state and collectively provides complete monitoring coverage
+- Resilient to individual node failures, self-healing network topology
+
+### Slide 4: Research Gap - What You'll Present
+**Main Content:**
+- **Existing Gossip Protocols**: Well-established for state dissemination in distributed systems, proven fault-tolerant and scalable
+- **However**: Traditional gossip approaches are "dumb" - they broadcast everything to everyone, wasting precious bandwidth
+- **Resource Constraints Reality**: Edge environments have limited network bandwidth, making naive gossiping inefficient
+- **Value of Information Theory**: Academic concept exists for prioritizing information based on utility, but lacks practical implementation
+- **The Missing Bridge**: No existing framework combines gossip protocols with intelligent, resource-aware filtering specifically for edge monitoring
+- **Our Innovation**: We bridge this gap by implementing Value of Information principles as a practical priority-based filtering mechanism integrated directly into the gossip protocol
+
+### Slide 5: Exploration 1 - Gossip Protocol Basics - What You'll Present
+**Main Content:**
+- **Rumor Spreading Analogy**: Like how rumors spread in social networks, each node shares information with a few random neighbors
+- **Push-Pull Mechanism**: Nodes both send their information (push) and request information from others (pull), ensuring bidirectional data flow
+- **Eventual Consistency**: Mathematical guarantee that all nodes will converge to the same state given enough time
+- **Fault Tolerance**: Network can lose multiple nodes without losing information - redundancy is built into the protocol
+- **Scalability**: Communication complexity grows logarithmically, not linearly, with network size
+- **Periodic Nature**: Gossip cycles occur at regular intervals, creating predictable communication patterns
+- **Randomization**: Random peer selection prevents network partitions and ensures even distribution
+
+### Slide 6: Exploration 2 - Priority-Based Filtering - What You'll Present
+**Main Content:**
+- **HIGH Priority Metrics**: CPU utilization, memory pressure, critical service health - highly volatile and operationally critical, always transmitted
+- **MEDIUM Priority Metrics**: Disk I/O, network utilization - moderately important, transmitted when significant changes occur
+- **LOW Priority Metrics**: Storage capacity, system uptime - stable metrics, transmitted periodically or on major changes
+- **Dynamic Classification**: Metrics can change priority based on system conditions (e.g., disk space becomes HIGH priority when approaching full)
+- **Bandwidth Savings**: Preliminary testing shows 60-80% reduction in network traffic compared to unfiltered gossip
+- **Contextual Intelligence**: System learns which metrics matter most for specific operational scenarios
+- **Threshold-Based Triggering**: Significant changes trigger immediate transmission regardless of priority
+
+### Slide 7: Exploration 3 - Data Model Design - What You'll Present
+**Main Content:**
+- **The Challenge**: In a distributed system, nodes need to exchange information reliably
+- **Our Approach**: We designed a simple data structure that ensures reliable communication
+- **Data Freshness**: System tracks which information is most recent to avoid using outdated data
+- **Node Health Tracking**: Nodes can detect when other nodes are functioning properly
+- **Data Reliability**: Built-in mechanisms ensure information isn't corrupted during transmission
+- **System Metrics**: The actual monitoring data (CPU, memory, etc.) is packaged efficiently
+- **Key Benefit**: This design enables trustworthy information sharing in an unreliable network environment
+- **Practical Impact**: Nodes can make informed decisions based on reliable data from their peers
+
+### Introduction Notes:
+- Edge computing creates new monitoring challenges
+- Traditional centralized systems fail in volatile environments
+- Need for decentralized approach
+
+### Abstract Notes:
+- Combines three key technologies
+- Focus on practical implementation
+- Addresses real-world constraints
+
+### Motivation Notes:
+- Centralized systems create bottlenecks
+- Edge environments are inherently unstable
+- Resource constraints demand efficiency
+
+### Research Gap Notes:
+- Gossip protocols exist but lack resource awareness
+- VoI concepts are theoretical
+- Need practical integration
+
+### Exploration Notes:
+1. **Gossip Protocol**: Explain rumor-spreading analogy, eventual consistency
+2. **Priority Filtering**: Demonstrate bandwidth savings, metric classification
+3. **Data Model**: Emphasize integrity guarantees, version control
+4. **Architecture**: Show how components work together
+
+---
+
+## Presentation Tips:
+- Keep slides visual-heavy, text-light
+- Use animations to show processes
+- Prepare detailed explanations verbally
+- Focus on concepts, not implementation details
+- Be ready to explain the "why" behind each design choice
