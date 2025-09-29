@@ -1,0 +1,236 @@
+Mobile Computing Course Topics
+1. Introduction to Mobile Computing
+
+Defining Mobility and Mobile Computing
+
+Mobile Computing vs. Mobile Communication
+
+Quality of Service (QoS): Latency and Data Loss Dimensions
+
+Core Concept: Adaptability in Mobile Systems
+
+Core Challenges: Ensuring QoS, Physical, Connectivity, Performance, and Terminal Challenges
+
+2. Network Design and Location Management Fundamentals
+
+Resource Constraints of Mobile Devices 
+            (Resource Poverty)
+
+Network Design: The Access Point Placement Problem
+            The Trade-off:   Dense Deployment (many APs) VS Sparse Deployment (few APs)
+
+Introduction to Location Management
+
+Two-Tier Architecture: 
+        Home Location Register (HLR) and 
+        Visitor Location Register (VLR)
+
+The Call Routing Process using HLR/VLR
+
+Data Management Costs: Search Cost and Response Time
+
+3. Capacity Planning and Network Performance
+
+The Three-Step Process for Capacity Planning
+
+    Step 1: Estimating Aggregate Application Throughput
+
+    Step 2: Estimating Realistic Access Point (AP) Throughput
+
+    Step 3: Calculate the Required Number of APs
+
+            No. of APs (Throughput) = Realistic AP Throughput / Aggregate Throughput
+                                        
+​
+    Calculation 2: Based on Client Count
+
+    No. of APs (Client Count)= Max Clients per AP / Number of Users
+​
+ 
+
+
+    Step 3: Calculating the Number of APs (based on Throughput vs. Client Count)
+        Total APs Needed=max(APs needed for Throughput, APs needed for Client Count)
+
+Deployment Strategies: Dual-Band (2.4 GHz vs. 5 GHz) and Load Balancing
+
+Adaptability at the Transport Layer: Data Compression and Adaptive Bitrate
+
+4. Mobile Software Architecture and Connectivity
+
+The Mobile Client-Server Architecture
+
+    The Challenge of Intermittent Connectivity (Voluntary vs. Forced)
+
+    Consequences of Disconnection: Orphan Calls
+
+Data Management Strategy: Caching (for Static vs. Dynamic Data)
+
+5. Client Design and Communication Models
+
+The Client Design Spectrum: 
+    Thin Clients (best example : dumb terminal] vs. Fat Clients (Fully Functional Devices)  : pros cons of both
+
+Application Partitioning and Computation Offloading
+
+Communication Models: Synchronous (Blocking) vs. Asynchronous (Non-Blocking)
+
+Remote Procedure Calls (RPC and gRPC)
+                RPC is designed to hide the complexity of network communication from the developer. The "calling procedure" on the mobile host invokes a local "stub" function, which handles the work of sending the request to the server where the "called procedure" is actually executed.
+
+                Queues and Buffers: For asynchronous RPCs in a mobile setting, queues and buffers are essential. They hold outgoing requests and incoming responses, allowing the system to function smoothly even with intermittent connectivity. If the device is offline, a request can sit in an outgoing queue until the connection is restored.
+
+Device Modes of Operation: Connected, Disconnected, and Doze Mode
+
+Adapting TCP for Mobile Networks: I-TCP, Snooping TCP, and M-TCP
+                    Adapting TCP for Mobile Environments
+                    Standard TCP was designed for reliable, low-error wired networks. It performs poorly in wireless environments because it mistakes packet loss from wireless interference for network congestion, causing it to slow down unnecessarily. To fix this, several variants were developed.
+
+                    I-TCP (Indirect TCP): This approach splits a single TCP connection into two separate connections at the base station.
+
+                    Mobile Host <--> Base Station (Wireless Part): Uses a specialized protocol optimized for wireless.
+
+                    Base Station <--> Server (Wired Part): Uses standard TCP.
+
+                    Pro: Isolates the wireless link's problems from the wired link.
+
+                    Con: Breaks TCP's end-to-end transparency; the server thinks it's talking directly to the client.
+
+                    [Mobile Host] <--Wireless TCP--> [Base Station] <--Standard TCP--> [Server]
+                    Snooping TCP (sTCP): The base station "snoops" on the TCP packets between the client and server. It monitors for packet loss on the wireless link and retransmits lost packets locally before the server's own timeout mechanism kicks in. This approach is transparent and maintains the end-to-end TCP connection.
+
+                    Mobile TCP (mTCP): This is a more advanced approach designed to explicitly handle long or frequent disconnections. When a disconnection is detected, mTCP freezes the TCP connection on the server side, preventing it from dropping, and then gracefully resumes it upon reconnection.
+
+6. Advanced Architectures: The Agent Model
+
+The Client/Agent/Server Model
+
+The Mobile Agent as a Proxy or Surrogate on the Fixed Network
+
+Functions and Benefits: 
+    State Management: The agent stores the application state in a buffer. This is its most critical job. When the client disconnects, the agent maintains its session with the server. When the client reconnects, it syncs with the agent instead of having to establish a whole new session with the server. This drastically reduces response time.
+
+    Optimizing Connectivity: The agent manages all the messy parts of the network, including messaging and queuing. It can bundle small requests together or wait for a better connection, shielding the client from the unreliability of the wireless link.
+
+    Offloading Functionality: The agent can execute services and handle computations on the client's behalf. This simplifies the client application's code.
+
+    Enabling Push Notifications: Because the agent is always on, the server can push a notification to the agent, which can then wait for the right moment to deliver it to the client.
+
+    Improving Battery Life: This is a huge benefit. By letting the agent manage the connection, the mobile device's power-hungry radio can be turned off for long periods. The agent wakes the client up only when necessary. This is why your notes say the agent is "responsible for battery longevity."
+
+Characteristics of an Agent: 
+    Autonomous, 
+    Reactive, 
+    Interactive & Interoperable, 
+    Intelligent
+
+7. Adaptation Strategies and Systems
+
+The Principle of Environmental Awareness
+
+The Adaptation Spectrum: 
+        Application-Transparent vs. Application-Aware
+
+Case Study: The WebExpress Client Intercept Model
+
+    Optimization via Protocol Reduction and Multiplexing
+
+Intelligent Agents and Knowledge Representation Languages (KRL)
+    Logic-based: Uses formal rules of logic (e.g., IF network_is_slow AND user_is_watching_video THEN reduce_video_quality).
+
+    Frame-based: Represents knowledge in data structures with "slots" (e.g., a "Network" object with slots for bandwidth, latency, and cost).
+
+    Semantic Networks: Represents knowledge as a graph of concepts and their relationships.
+
+8. Advanced Location Management and Optimization
+
+The Fundamental Trade-off: Lookups vs. Updates
+
+Database Architectures: Flat vs. Hierarchical
+
+Optimization: Forwarding Pointers
+
+Selection Criteria: The Call-to-Mobility Ratio (CMR)
+
+Service Capacity and Database Size
+
+Formula:
+
+CMR =   Number of Moves (U) / Number of Calls Received (C)
+​
+ 
+    Significance:
+
+    High CMR: The user has low mobility but receives many calls (e.g., someone working at a desk). In this case, lookup cost is the dominant factor. The system should be optimized for fast lookups.
+
+    Low CMR: The user has high mobility but receives few calls (e.g., a courier on the move). In this case, update cost is the dominant factor. The system should be optimized to make updates as cheap as possible.
+
+The Two-Tier (HLR/VLR) Scheme Clarified
+
+The Process:
+
+Movement: When user 'x' moves from area 'i' to area 'j', their entry in the old VLR (for area 'i') is deleted, a new entry is created in the new VLR (for area 'j'), and their central HLR is updated to point to this new VLR. Your notes describe this perfectly.
+
+Lookup: To find user 'x', the network first contacts their HLR. The HLR provides the address of the VLR where 'x' is currently located, and the call is routed there.
+
+Important Clarification: Your notes say, "Each cell has HLR + VLR." This is a common point of confusion. The correct architecture is:
+
+The HLR is a centralized database for the entire network provider. There is only one logical HLR.
+
+A VLR is associated with a Mobile Switching Center (MSC), and one MSC manages a large group of cells (a location area).
+
+Therefore, the VLR is shared across many cells, not located in each one
+
+
+Location Caching Schemes: Eager (Proactive) vs. Lazy (Reactive) how these works ,  pros , and cons , best for
+
+Exploiting User Stability (Predictability of Moves and Lookups)
+
+Advanced Optimizations: 
+    Partitioning (Working Set Model) and 
+    Replication
+
+
+    Summary Table of Optimization Strategies
+    This table summarizes which strategy to use based on the user's behavior.
+
+    Strategy	Primary Benefit	Ideal User Type	Description
+    Partitioning	Reduces Update Cost	Users with predictable, routine movements.	Groups frequently visited cells into a single zone to minimize global updates.
+    Replication	Reduces Lookup Cost	High CMR (Low mobility, many calls)	Copies data to multiple locations for faster local lookups.
+    Forwarding Pointers	Reduces Update Cost	Low CMR (High mobility, few calls)	Leaves a pointer at the old location to avoid immediate, costly database updates.
+    Caching (Lazy)	Reduces Update Cost	Low CMR (High mobility, few calls)	Updates the location cache only when a lookup fails (a "cache miss").
+    Caching (Eager)	Reduces Lookup Cost	High CMR (Low mobility, many calls)	Updates the location cache immediately every time the user moves.
+    
+
+
+9. Information Dissemination and Content Delivery
+
+Information Management Challenges: Server Load , Link Quality , Bandwidth Asymmetry
+
+Broadcasting as a "Push-Based" Solution
+
+The Broadcast Disc Model and Optimization Schemes (Flat, Rotated, Skewed)
+
+Content Delivery Networks (CDNs)
+
+Streaming Media: Live Streaming vs. On-Demand Streaming
+
+10. Adaptive Bitrate Streaming (ABS)
+
+The Problem with Fixed Bitrate Streaming (Buffering)
+
+How ABS Works: Pre-transcoding, Chunking, and BLOB Storage
+
+The Roles of the Client Player and the Server
+
+Core Trade-offs: Quality vs. Continuity and Chunk Size Impact
+
+11. Final Exam Review Concepts
+
+Recap of Device Modes
+
+Hoarding and Reintegration for Disconnected Operation
+
+Handoff Procedures in Hierarchical Databases
+
+Differences between Mobile OS and Desktop OS
